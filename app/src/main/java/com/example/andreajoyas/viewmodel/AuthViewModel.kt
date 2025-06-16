@@ -3,6 +3,7 @@ package com.example.andreajoyas.viewmodel
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -82,7 +83,7 @@ class AuthViewModel : ViewModel() {
         )
 
         db.collection("usuarios").document(userId)
-            .set(data) // ✅ usamos set() en lugar de update()
+            .set(data, SetOptions.merge()) // ✅ merge para no borrar "rol"
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onError(it.message) }
     }
@@ -108,8 +109,30 @@ class AuthViewModel : ViewModel() {
             }
     }
 
+    fun getUserRole(onResult: (String?) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            onResult(null)
+            return
+        }
+
+        db.collection("usuarios").document(userId).get()
+            .addOnSuccessListener { document ->
+                val role = document.getString("rol")
+                onResult(role)
+            }
+            .addOnFailureListener {
+                onResult(null)
+            }
+    }
+
     fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }
-}
 
+    // ✅ Nueva función: cerrar sesión
+    fun logout() {
+        auth.signOut()
+        _loginState.value = null
+    }
+}
