@@ -61,18 +61,18 @@ fun RegisterScreen(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp)
+                .padding(top = 50.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logoandrea),
+                painter = painterResource(id = R.drawable.logoandrearecortado),
                 contentDescription = "Logo de AndreaJoyas",
-                modifier = Modifier
-                    .height(160.dp)
-                    .padding(bottom = 16.dp),
-                contentScale = ContentScale.Fit
+                modifier = Modifier.height(110.dp)
             )
+
+            Spacer(modifier = Modifier.height(40.dp))
 
             Card(
                 shape = RoundedCornerShape(20.dp),

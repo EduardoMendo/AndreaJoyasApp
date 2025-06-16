@@ -71,9 +71,9 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(60.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.logoandrea),
+                painter = painterResource(id = R.drawable.logoandrearecortado),
                 contentDescription = "Logo de AndreaJoyas",
-                modifier = Modifier.height(100.dp)
+                modifier = Modifier.height(110.dp)
             )
 
             Spacer(modifier = Modifier.height(40.dp))
