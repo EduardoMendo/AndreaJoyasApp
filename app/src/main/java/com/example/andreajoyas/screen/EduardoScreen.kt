@@ -8,3 +8,7 @@ import androidx.compose.runtime.Composable
 fun EduScreen(){
     print("hola")
 }
+
+fun Andrea(){
+    print("Andrea")
+}
