@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel : ViewModel() {
 
-    internal val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    internal val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private val _loginState = MutableStateFlow<String?>(null)
     val loginState: StateFlow<String?> = _loginState
