@@ -4,44 +4,41 @@ Este repositorio contiene la configuración y el setup del backend para la aplic
 
 ## Requisitos Previos ##
 
-Antes de continuar, asegúrate de tener instalado y configurado lo siguiente:
+Antes de continuar, hay que asegurarse de tener instalado y configurado lo siguiente:
 
 Node.js (si se utilizan Firebase Cloud Functions, se recomienda la versión 14.x o superior)
 Firebase CLI
 Java Development Kit (JDK) (versión 11 o superior, para compatibilidad con Android Studio)
 Android Studio (para la aplicación frontend)
-Una cuenta de Firebase y un proyecto (crea uno en Firebase Console)
+Una cuenta de Firebase y un proyecto (para esto hay que crear uno en Firebase Console)
 Cuenta de Google con acceso a Firebase y Google Cloud
 
 ## Instrucciones de Configuración ##
 ### 1. Inicializar el Proyecto Firebase ###
 
-Accede a la Firebase Console y crea un nuevo proyecto llamado "AndreaJoyas".
-Habilita Autenticación y configura el inicio de sesión con correo y contraseña.
-Habilita Firestore y configura la base de datos con la siguiente estructura de colección:
+Accedimos a la Firebase Console y creamos un nuevo proyecto llamado "AndreaJoyas".
+Habilitamos Autenticación y configuramos el inicio de sesión con correo y contraseña.
+Habilitamos Firestore y configuramos la base de datos con la siguiente estructura de colección:
 usuarios (documentos con campos: nombre, apellido, telefono, direccion, email, rol)
 
 
-(Opcional) Configura Firebase Cloud Functions si necesitas lógica adicional del lado del servidor (por ejemplo, APIs personalizadas).
-
 ### 2. Configurar Firebase en el Proyecto ###
 
-Descarga el archivo google-services.json desde la Firebase Console y colócalo en el directorio app/ de tu proyecto Android.
-Instala la Firebase CLI ejecutando npm install -g firebase-tools si no está instalada.
-Inicia sesión en Firebase con firebase login usando tu cuenta de Google.
+Descargamos el archivo google-services.json desde la Firebase Console y lo colocamos en el directorio app/ de nuestro proyecto Android.
+Iniciamos sesión en Firebase con firebase login usando nuestra cuenta de Google.
 
 ### 3. Desplegar el Backend ###
 
-Despliega las reglas y configuraciones de seguridad de Firestore:firebase deploy --only firestore:rules
+Desplegamos las reglas y configuraciones de seguridad de Firestore:firebase deploy --only firestore:rules
 
-Verifica el despliegue en la Firebase Console en las secciones "Database" y "Functions".
+Verificamos el despliegue en la Firebase Console en las secciones "Database" y "Functions".
 
 ### 4. Ejecutar la Aplicación Android ###
 
-Abre el proyecto Android en Android Studio.
-Sincroniza el proyecto con los archivos Gradle.
-Conecta un dispositivo o usa un emulador.
-Ejecuta la app usando el botón "Run" en Android Studio.
+Abrimos el proyecto Android en Android Studio.
+Sincronizamos el proyecto con los archivos Gradle.
+Usamos el emulador integrado de Android Studio (se puede conectar también un dispositivo android).
+Ejecutamos la app usando el botón "Run" en Android Studio.
 La aplicación se conectará automáticamente al backend Firebase usando la configuración de google-services.json.
 
 ## Servicios Implementados ##
@@ -79,6 +76,6 @@ Uso: Desplegado y desencadenado mediante HTTP o eventos de base de datos según 
 
 ## Solución de Problemas ##
 
-Problemas de Autenticación: Asegúrate de que los proveedores de correo/contraseña estén habilitados en la Firebase Console.
-Errores de Firestore: Verifica las reglas de seguridad y asegúrate de que google-services.json esté correctamente colocado.
-Fallos de Despliegue: Confirma que la Firebase CLI esté autenticada y tenga seleccionado el proyecto correcto (firebase use <project-id>).
+Problemas de Autenticación: se debe de asegurar de que los proveedores de correo/contraseña estén habilitados en la Firebase Console.
+Errores de Firestore: Verificar las reglas de seguridad es necesario y asegurarse de que google-services.json esté correctamente colocado.
+Fallos de Despliegue: Confirmar que la Firebase CLI esté autenticada y tenga seleccionado el proyecto correcto (firebase use <project-id>).
