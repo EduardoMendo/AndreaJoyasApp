@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.andreajoyas.screen.CompleteProfileScreen
 import com.example.andreajoyas.screen.HomeScreen
 import com.example.andreajoyas.screen.LoginScreen
+import com.example.andreajoyas.screen.ProfileScreen
 import com.example.andreajoyas.screen.RegisterScreen
 import com.example.andreajoyas.viewmodel.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,7 +39,14 @@ fun AppNavGraph() {
             )
         }
         composable("home") {
-            HomeScreen()
+            HomeScreen(
+                onNavigateToProfile = { navController.navigate("profile") },
+            )
+        }
+        composable("profile") {
+            ProfileScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
     }
 }
