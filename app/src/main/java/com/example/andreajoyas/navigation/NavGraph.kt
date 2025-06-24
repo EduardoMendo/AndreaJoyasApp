@@ -15,8 +15,8 @@ fun AppNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
-                onNavigateToRegister = { navController.navigate("register") },
-                onLoginSuccess = { userRole ->
+                onNavigateToRegister        = { navController.navigate("register") },
+                onLoginSuccess              = { userRole ->
                     if (userRole == "admin") {
                         navController.navigate("admin")
                     } else if (userRole == "cliente") {
@@ -32,7 +32,7 @@ fun AppNavGraph(navController: NavHostController) {
                     }
                 },
                 onNavigateToCompleteProfile = { navController.navigate("complete_profile") },
-                authViewModel = authViewModel
+                authViewModel               = authViewModel
             )
         }
 
@@ -45,7 +45,7 @@ fun AppNavGraph(navController: NavHostController) {
 
         composable("complete_profile") {
             CompleteProfileScreen(
-                authViewModel = authViewModel,
+                authViewModel      = authViewModel,
                 onProfileCompleted = { navController.navigate("home") }
             )
         }
@@ -53,7 +53,7 @@ fun AppNavGraph(navController: NavHostController) {
         composable("home") {
             HomeScreen(
                 authViewModel = authViewModel,
-                onLogout = {
+                onLogout      = {
                     navController.navigate("login") {
                         popUpTo("login") { inclusive = true }
                     }
@@ -64,11 +64,12 @@ fun AppNavGraph(navController: NavHostController) {
         composable("admin") {
             AdminScreen(
                 authViewModel = authViewModel,
-                onLogout = {
+                onLogout      = {
                     navController.navigate("login") {
                         popUpTo(0) { inclusive = true }
                     }
-                }
+                },
+                navController = navController
             )
         }
     }

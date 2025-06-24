@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.andreajoyas.R
 import com.example.andreajoyas.ui.theme.DoradoElegante
 import com.example.andreajoyas.ui.theme.FondoSuave
@@ -22,7 +23,8 @@ import com.example.andreajoyas.viewmodel.AuthViewModel
 @Composable
 fun AdminScreen(
     authViewModel: AuthViewModel,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    navController: NavController
 ) {
     Box(
         modifier = Modifier
@@ -81,8 +83,9 @@ fun AdminScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Botón para navegar a agregar producto
                     Button(
-                        onClick = { /* Navegar a crear producto */ },
+                        onClick = { navController.navigate("add_product") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = DoradoElegante)
                     ) {
@@ -91,8 +94,9 @@ fun AdminScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
+                    // Este botón lo puedes activar cuando tengas lista la pantalla de catálogo
                     Button(
-                        onClick = { /* Navegar a lista de productos */ },
+                        onClick = { /* navController.navigate("admin_catalog") */ },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = DoradoElegante)
                     ) {
