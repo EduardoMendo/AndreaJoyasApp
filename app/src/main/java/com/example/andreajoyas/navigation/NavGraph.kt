@@ -72,5 +72,12 @@ fun AppNavGraph(navController: NavHostController) {
                 navController = navController
             )
         }
+
+        composable("add_product") {
+            AddProductScreen(
+                navController   = navController,
+                onProductAdded  = { navController.popBackStack() }
+            )
+        }
     }
 }
