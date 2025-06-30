@@ -14,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.andreajoyas.R
-import com.example.andreajoyas.viewmodel.AuthViewModel
 import com.example.andreajoyas.ui.theme.DoradoElegante
 import com.example.andreajoyas.ui.theme.FondoSuave
 
