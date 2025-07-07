@@ -1,15 +1,13 @@
 package com.example.andreajoyas.screen
 
-
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +21,12 @@ import com.example.andreajoyas.ui.theme.DoradoElegante
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddProductScreen(
     navController: NavController,
     onProductAdded: () -> Unit
 ) {
-    // --- Estados del formulario ---
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
@@ -40,16 +38,14 @@ fun AddProductScreen(
     var showSuccess by remember { mutableStateOf(false) }
 
     val categories = listOf("anillos", "cadenas", "brazaletes", "aretes")
+    var expanded by remember { mutableStateOf(false) }
 
-    // Selector de imagen
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { imageUri = it }
 
-    // Instancia de Firestore
     val db = FirebaseFirestore.getInstance().collection("productos")
 
-    // Diálogo de éxito
     if (showSuccess) {
         AlertDialog(
             onDismissRequest = { showSuccess = false },
@@ -63,7 +59,7 @@ fun AddProductScreen(
             }
         )
     }
-    // Diálogo de error
+
     showError?.let { err ->
         AlertDialog(
             onDismissRequest = { showError = null },
@@ -76,7 +72,6 @@ fun AddProductScreen(
     }
 
     Column(Modifier.fillMaxSize()) {
-        // Barra superior con flecha de retroceso
         TopAppBar(
             title = { Text("Agregar producto") },
             navigationIcon = {
@@ -84,12 +79,13 @@ fun AddProductScreen(
                     Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
                 }
             },
-            backgroundColor = DoradoElegante,
-            contentColor = Color.White,
-            elevation = 4.dp
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = DoradoElegante,
+                titleContentColor = Color.White,
+                navigationIconContentColor = Color.White
+            )
         )
 
-        // Formulario
         Column(
             Modifier
                 .padding(16.dp)
@@ -119,11 +115,40 @@ fun AddProductScreen(
             )
             Spacer(Modifier.height(8.dp))
 
-            DropdownMenuCategory(
-                selected = category,
-                options = categories,
-                onSelect = { category = it }
-            )
+            // Menú desplegable de categoría
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                OutlinedTextField(
+                    value = category,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Categoría") },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(),
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    colors = ExposedDropdownMenuDefaults.textFieldColors()
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    categories.forEach { cat ->
+                        DropdownMenuItem(
+                            text = { Text(cat.replaceFirstChar { it.uppercase() }) },
+                            onClick = {
+                                category = cat
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
             Spacer(Modifier.height(8.dp))
 
             OutlinedTextField(
@@ -134,11 +159,10 @@ fun AddProductScreen(
             )
             Spacer(Modifier.height(16.dp))
 
-            // Selector de imagen
             Button(
                 onClick = { imagePicker.launch("image/*") },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = DoradoElegante),
+                colors = ButtonDefaults.buttonColors(containerColor = DoradoElegante),
                 enabled = !isLoading
             ) {
                 Text("Seleccionar imagen (opcional)", color = Color.White)
@@ -157,11 +181,9 @@ fun AddProductScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            // Guardar en Firestore
             Button(
                 onClick = {
                     isLoading = true
-                    // Generar ID y objeto
                     val newId = db.document().id
                     val product = Product(
                         id = newId,
@@ -169,16 +191,15 @@ fun AddProductScreen(
                         description = description,
                         price = price.toDoubleOrNull() ?: 0.0,
                         category = category,
-                        imageUri = imageUri?.toString(),
-                        stock = stock.toIntOrNull() ?: 0
+                        stock = stock.toIntOrNull() ?: 0,
+                        imageUrl = imageUri?.toString() ?: ""
                     )
-                    // Subir
+
                     db.document(newId)
                         .set(product)
                         .addOnSuccessListener {
                             isLoading = false
                             showSuccess = true
-                            // Limpiar
                             name = ""
                             description = ""
                             price = ""
@@ -193,43 +214,10 @@ fun AddProductScreen(
                 },
                 enabled = !isLoading && name.isNotBlank() && description.isNotBlank() && price.isNotBlank(),
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = DoradoElegante)
+                colors = ButtonDefaults.buttonColors(containerColor = DoradoElegante)
             ) {
                 if (isLoading) CircularProgressIndicator(color = Color.White, strokeWidth = 2.dp)
                 else Text("Guardar producto", color = Color.White)
-            }
-        }
-    }
-}
-
-@Composable
-fun DropdownMenuCategory(
-    selected: String,
-    options: List<String>,
-    onSelect: (String) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    Column {
-        OutlinedTextField(
-            value = selected,
-            onValueChange = {},
-            label = { Text("Categoría") },
-            readOnly = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true }
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { cat ->
-                DropdownMenuItem(onClick = {
-                    onSelect(cat)
-                    expanded = false
-                }) {
-                    Text(cat.replaceFirstChar { it.uppercase() })
-                }
             }
         }
     }
