@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.andreajoyas.R
 import com.example.andreajoyas.ui.theme.DoradoElegante
 import com.example.andreajoyas.ui.theme.FondoSuave
+import com.example.andreajoyas.viewmodel.AuthViewModel
 
 @Composable
 fun AdminScreen(
